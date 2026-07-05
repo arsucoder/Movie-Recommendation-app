@@ -36,7 +36,7 @@ movies, similarity = load_data()
 # Fetch Movie Poster
 # ==========================
 
-API_KEY = "YOUR_TMDB_API_KEY"
+API_KEY = "c10f192f427f010c1f4a7d8600551668"
 
 
 def fetch_poster(movie_id):
