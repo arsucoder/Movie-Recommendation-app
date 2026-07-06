@@ -1,19 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Apr 29 13:55:34 2026
-
-@author: arsla
-"""
-
 import os
 import pickle
 import requests
 import pandas as pd
 import streamlit as st
 import gdown
-
-from styles import load_css
-from utils import search_movies
 
 # ==========================================================
 # PAGE CONFIG
@@ -25,48 +15,8 @@ st.set_page_config(
     layout="wide"
 )
 
-# Load css
-st.markdown(load_css(), unsafe_allow_html=True)
-
-#st.title("🎬 Movie Recommendation System")
-#st.write("Select a movie and get similar movie recommendations with posters.")
-st.markdown("""
-<div class="hero">
-
-<h1>🎬 Movie Recommendation System</h1>
-
-<p>
-Discover movies you'll love with AI-powered recommendations.
-Search any movie and instantly find similar titles.
-</p>
-
-</div>
-""", unsafe_allow_html=True)
-
-# ---------------- Sidebar ----------------
-
-st.sidebar.image(
-    "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",
-    width=70
-)
-
-st.sidebar.title("Movie Recommender")
-
-st.sidebar.markdown("---")
-
-st.sidebar.write("""
-Built using
-
-• Streamlit
-
-• Scikit-Learn
-
-• TMDB API
-""")
-
-st.sidebar.markdown("---")
-
-st.sidebar.success("Model Loaded Successfully")
+st.title("🎬 Movie Recommendation System")
+st.write("Select a movie and get similar movie recommendations with posters.")
 
 # ==========================================================
 # GOOGLE DRIVE FILE DETAILS
@@ -113,6 +63,7 @@ movies = load_movies()
 
 # Replace with your TMDB API Key
 API_KEY = st.secrets["TMDB_API_KEY"]
+
 
 def fetch_poster(movie_id):
     """
@@ -183,29 +134,12 @@ def recommend(movie_name):
 # UI
 # ==========================================================
 
-# searching box
-
-movie_input = st.text_input(
-    "🔍 Search Movie",
-    placeholder="Start typing a movie name..."
+selected_movie = st.selectbox(
+    "Select Movie",
+    movies["title"].values
 )
 
-suggestions = search_movies(movie_input, movies)
-
-selected_movie = None
-
-if suggestions:
-
-    selected_movie = st.selectbox(
-        "Suggestions",
-        suggestions
-    )
-
-# --------------------------------
-
-if selected_movie:
-
-    if st.button("🎬 Recommend Movies"):
+if st.button("Recommend Movies"):
 
     with st.spinner("Finding recommendations..."):
 
@@ -224,6 +158,6 @@ if selected_movie:
 
 st.markdown("---")
 st.markdown(
-    "<center>Made with ❤️ By arsu</center>",
+    "<center>Made with ❤️ using Streamlit</center>",
     unsafe_allow_html=True
 )
