@@ -5,66 +5,109 @@ Created on Wed Apr 29 13:55:34 2026
 @author: arsla
 """
 
+import os
 import pickle
 import requests
+import pandas as pd
 import streamlit as st
+import gdown
 
-# ==========================
-# Page Configuration
-# ==========================
+# ==========================================================
+# PAGE CONFIG
+# ==========================================================
+
 st.set_page_config(
     page_title="Movie Recommendation System",
     page_icon="🎬",
     layout="wide"
 )
 
-# ==========================
-# Load Saved Files
-# ==========================
+st.title("🎬 Movie Recommendation System")
+st.write("Select a movie and get similar movie recommendations with posters.")
+
+# ==========================================================
+# GOOGLE DRIVE FILE DETAILS
+# ==========================================================
+
+# Replace this with your Google Drive File ID
+FILE_ID = "YOUR_GOOGLE_DRIVE_FILE_ID"
+
+MODEL_PATH = "movie_recommendation.sav"
+
+# Direct download link
+URL = f"https://drive.google.com/uc?id={FILE_ID}"
+
+# ==========================================================
+# DOWNLOAD MODEL IF NOT PRESENT
+# ==========================================================
+
+if not os.path.exists(MODEL_PATH):
+    with st.spinner("Downloading recommendation model... Please wait."):
+        gdown.download(URL, MODEL_PATH, quiet=False)
+
+# ==========================================================
+# LOAD DATA
+# ==========================================================
 
 @st.cache_resource
-def load_data():
-    movies = pickle.load(open("movies.pkl", "rb"))
-    similarity = pickle.load(open("similarity.pkl", "rb"))
-    return movies, similarity
+def load_similarity():
+    with open(MODEL_PATH, "rb") as file:
+        similarity = pickle.load(file)
+    return similarity
 
 
-movies, similarity = load_data()
+@st.cache_data
+def load_movies():
+    return pd.read_csv("movies.csv")
 
 
-# ==========================
-# Fetch Movie Poster
-# ==========================
+similarity = load_similarity()
+movies = load_movies()
 
-API_KEY = "c10f192f427f010c1f4a7d8600551668"
+# ==========================================================
+# TMDB API
+# ==========================================================
+
+# Replace with your TMDB API Key
+API_KEY = "YOUR_TMDB_API_KEY"
 
 
 def fetch_poster(movie_id):
     """
-    Fetch movie poster from TMDB API.
+    Returns poster URL using TMDB movie ID.
     """
 
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={API_KEY}&language=en-US"
+    try:
+        url = (
+            f"https://api.themoviedb.org/3/movie/{movie_id}"
+            f"?api_key={API_KEY}&language=en-US"
+        )
 
-    response = requests.get(url)
+        response = requests.get(url, timeout=10)
 
-    data = response.json()
+        if response.status_code != 200:
+            return None
 
-    poster_path = data.get("poster_path")
+        data = response.json()
 
-    if poster_path:
-        return "https://image.tmdb.org/t/p/w500/" + poster_path
+        poster_path = data.get("poster_path")
 
-    return None
+        if poster_path:
+            return "https://image.tmdb.org/t/p/w500" + poster_path
+
+    except Exception:
+        pass
+
+    return "https://via.placeholder.com/500x750?text=No+Poster"
 
 
-# ==========================
-# Recommendation Function
-# ==========================
+# ==========================================================
+# RECOMMENDATION FUNCTION
+# ==========================================================
 
-def recommend(movie):
+def recommend(movie_name):
 
-    movie_index = movies[movies["title"] == movie].index[0]
+    movie_index = movies[movies["title"] == movie_name].index[0]
 
     distances = similarity[movie_index]
 
@@ -77,52 +120,51 @@ def recommend(movie):
     recommended_movies = []
     recommended_posters = []
 
-    for item in movie_list:
+    for movie in movie_list:
 
-        movie_id = movies.iloc[item[0]].movie_id
+        idx = movie[0]
 
-        recommended_movies.append(
-            movies.iloc[item[0]].title
-        )
+        movie_title = movies.iloc[idx]["title"]
 
-        recommended_posters.append(
-            fetch_poster(movie_id)
-        )
+        movie_id = movies.iloc[idx]["id"]
+
+        poster = fetch_poster(movie_id)
+
+        recommended_movies.append(movie_title)
+
+        recommended_posters.append(poster)
 
     return recommended_movies, recommended_posters
 
 
-# ==========================
-# User Interface
-# ==========================
-
-st.title("🎬 Movie Recommendation System")
-
-st.markdown(
-    "Select your favorite movie and discover similar movies."
-)
+# ==========================================================
+# UI
+# ==========================================================
 
 selected_movie = st.selectbox(
-    "Choose a Movie",
+    "Select Movie",
     movies["title"].values
 )
 
-
-# ==========================
-# Recommendation Button
-# ==========================
-
 if st.button("Recommend Movies"):
 
-    names, posters = recommend(selected_movie)
+    with st.spinner("Finding recommendations..."):
+
+        names, posters = recommend(selected_movie)
 
     cols = st.columns(5)
 
     for i in range(5):
-
         with cols[i]:
-
-            if posters[i]:
-                st.image(posters[i])
-
+            st.image(posters[i], use_container_width=True)
             st.caption(names[i])
+
+# ==========================================================
+# FOOTER
+# ==========================================================
+
+st.markdown("---")
+st.markdown(
+    "<center>Made with ❤️ using Streamlit</center>",
+    unsafe_allow_html=True
+)
