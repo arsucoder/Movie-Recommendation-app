@@ -12,11 +12,15 @@ import pandas as pd
 import streamlit as st
 import gdown
 
+from styles import load_css
+from utils import search_movies
+
 # ==========================================================
 # PAGE CONFIG
 # ==========================================================
 
 st.set_page_config(
+    st.markdown(load_css(), unsafe_allow_html=True)
     page_title="Movie Recommendation System",
     page_icon="🎬",
     layout="wide"
