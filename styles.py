@@ -1,84 +1,260 @@
 def load_css():
+
     return """
-    <style>
 
-    /* Hide Streamlit Menu */
-    #MainMenu {visibility:hidden;}
-    footer {visibility:hidden;}
-    header {visibility:hidden;}
+<style>
 
-    .stApp{
-        background:#0E1117;
-        color:white;
-    }
+/* ------------------------------------------------------- */
+/* GENERAL */
+/* ------------------------------------------------------- */
 
-    /* Hero Banner */
-    .hero{
-        background:linear-gradient(
-            rgba(0,0,0,.85),
-            rgba(0,0,0,.90)
-        ),
-        url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600");
-        background-size:cover;
-        background-position:center;
-        padding:70px;
-        border-radius:20px;
-        margin-bottom:30px;
-    }
+#MainMenu {visibility:hidden;}
+footer {visibility:hidden;}
+header {visibility:hidden;}
 
-    .hero h1{
-        color:#E50914;
-        font-size:55px;
-        font-weight:800;
-        margin-bottom:10px;
-    }
+html, body, [class*="css"]{
 
-    .hero p{
-        font-size:20px;
-        color:#DDDDDD;
-    }
+    background:#0B0B0B;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
 
-    /* Search Box */
+}
 
-    input{
-        border-radius:12px !important;
-    }
+.stApp{
 
-    /* Recommendation Button */
+    background:#0B0B0B;
 
-    .stButton>button{
-        background:#E50914;
-        color:white;
-        border:none;
-        border-radius:10px;
-        height:50px;
-        width:100%;
-        font-size:18px;
-        font-weight:bold;
-    }
+}
 
-    .stButton>button:hover{
-        background:#B20710;
-        transition:.3s;
-    }
+/* ------------------------------------------------------- */
+/* HERO */
+/* ------------------------------------------------------- */
 
-    /* Movie Card */
+.hero{
 
-    .movie-card{
+    background:
+    linear-gradient(
+        rgba(0,0,0,.82),
+        rgba(0,0,0,.95)
+    ),
 
-        background:#181818;
-        border-radius:15px;
-        padding:15px;
+    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600");
 
-        transition:0.3s;
-    }
+    background-size:cover;
+    background-position:center;
 
-    .movie-card:hover{
+    padding:80px;
 
-        transform:scale(1.05);
+    border-radius:20px;
 
-        box-shadow:0px 8px 30px rgba(255,255,255,.15);
-    }
+    margin-bottom:35px;
 
-    </style>
-    """
+}
+
+.hero h1{
+
+    color:#E50914;
+
+    font-size:60px;
+
+    font-weight:800;
+
+}
+
+.hero p{
+
+    color:#DDDDDD;
+
+    font-size:20px;
+
+}
+
+/* ------------------------------------------------------- */
+/* BUTTON */
+/* ------------------------------------------------------- */
+
+.stButton>button{
+
+    background:#E50914;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    width:100%;
+
+    height:52px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+.stButton>button:hover{
+
+    background:#B20710;
+
+    transition:0.25s;
+
+}
+
+/* ------------------------------------------------------- */
+/* SEARCH */
+/* ------------------------------------------------------- */
+
+.stTextInput>div>div>input{
+
+    background:#222;
+
+    color:white;
+
+    border-radius:12px;
+
+}
+
+/* ------------------------------------------------------- */
+/* MOVIE CARD */
+/* ------------------------------------------------------- */
+
+.movie-card{
+
+    background:#171717;
+
+    border-radius:18px;
+
+    padding:12px;
+
+    transition:0.3s;
+
+    min-height:610px;
+
+}
+
+.movie-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0px 10px 35px rgba(255,255,255,.15);
+
+}
+
+/* ------------------------------------------------------- */
+/* MOVIE TITLE */
+/* ------------------------------------------------------- */
+
+.movie-title{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-top:10px;
+
+    color:white;
+
+}
+
+/* ------------------------------------------------------- */
+/* BADGES */
+/* ------------------------------------------------------- */
+
+.badge{
+
+    display:inline-block;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    margin:3px;
+
+    font-size:13px;
+
+    color:white;
+
+}
+
+.rating{
+
+    background:#28a745;
+
+}
+
+.year{
+
+    background:#0d6efd;
+
+}
+
+.runtime{
+
+    background:#fd7e14;
+
+}
+
+.genre{
+
+    background:#6f42c1;
+
+}
+
+/* ------------------------------------------------------- */
+/* POSTER */
+/* ------------------------------------------------------- */
+
+.movie-poster{
+
+    border-radius:15px;
+
+    width:100%;
+
+}
+
+/* ------------------------------------------------------- */
+/* SIDEBAR */
+/* ------------------------------------------------------- */
+
+section[data-testid="stSidebar"]{
+
+    background:#111;
+
+}
+
+/* ------------------------------------------------------- */
+/* EXPANDER */
+/* ------------------------------------------------------- */
+
+details{
+
+    background:#1B1B1B;
+
+    border-radius:10px;
+
+    padding:10px;
+
+}
+
+/* ------------------------------------------------------- */
+/* SCROLLBAR */
+/* ------------------------------------------------------- */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#E50914;
+
+    border-radius:20px;
+
+}
+
+</style>
+
+"""
