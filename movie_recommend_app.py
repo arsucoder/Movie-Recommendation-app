@@ -20,14 +20,53 @@ from utils import search_movies
 # ==========================================================
 
 st.set_page_config(
-    st.markdown(load_css(), unsafe_allow_html=True)
     page_title="Movie Recommendation System",
     page_icon="🎬",
     layout="wide"
 )
 
-st.title("🎬 Movie Recommendation System")
-st.write("Select a movie and get similar movie recommendations with posters.")
+# Load css
+st.markdown(load_css(), unsafe_allow_html=True)
+
+#st.title("🎬 Movie Recommendation System")
+#st.write("Select a movie and get similar movie recommendations with posters.")
+st.markdown("""
+<div class="hero">
+
+<h1>🎬 Movie Recommendation System</h1>
+
+<p>
+Discover movies you'll love with AI-powered recommendations.
+Search any movie and instantly find similar titles.
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
+# ---------------- Sidebar ----------------
+
+st.sidebar.image(
+    "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg",
+    width=70
+)
+
+st.sidebar.title("Movie Recommender")
+
+st.sidebar.markdown("---")
+
+st.sidebar.write("""
+Built using
+
+• Streamlit
+
+• Scikit-Learn
+
+• TMDB API
+""")
+
+st.sidebar.markdown("---")
+
+st.sidebar.success("Model Loaded Successfully")
 
 # ==========================================================
 # GOOGLE DRIVE FILE DETAILS
@@ -144,12 +183,29 @@ def recommend(movie_name):
 # UI
 # ==========================================================
 
-selected_movie = st.selectbox(
-    "Select Movie",
-    movies["title"].values
+# searching box
+
+movie_input = st.text_input(
+    "🔍 Search Movie",
+    placeholder="Start typing a movie name..."
 )
 
-if st.button("Recommend Movies"):
+suggestions = search_movies(movie_input, movies)
+
+selected_movie = None
+
+if suggestions:
+
+    selected_movie = st.selectbox(
+        "Suggestions",
+        suggestions
+    )
+
+# --------------------------------
+
+if selected_movie:
+
+    if st.button("🎬 Recommend Movies"):
 
     with st.spinner("Finding recommendations..."):
 
@@ -168,6 +224,6 @@ if st.button("Recommend Movies"):
 
 st.markdown("---")
 st.markdown(
-    "<center>Made with ❤️ using Streamlit</center>",
+    "<center>Made with ❤️ By arsu</center>",
     unsafe_allow_html=True
 )
