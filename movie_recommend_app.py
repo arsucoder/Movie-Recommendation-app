@@ -134,39 +134,47 @@ def recommend(movie_name):
 # UI
 # ==========================================================
 
-#selected_movie = st.selectbox(
- #   "Select Movie",
-  #  movies["title"].values
-#)
+# ==========================================================
+# UI
+# ==========================================================
 
-movie_input = st.text_input(
+search_query = st.text_input(
     "🔍 Search Movie",
-    placeholder="Start typing a movie name..."
+    placeholder="Type a movie name..."
 )
-
-suggestions = search_movies(movie_input, movies)
 
 selected_movie = None
 
-if suggestions:
+if search_query:
 
-    selected_movie = st.selectbox(
-        "Suggestions",
-        suggestions
-    )
+    # Find matching movies (case-insensitive)
+    filtered_movies = movies[
+        movies["title"].str.contains(search_query, case=False, na=False)
+    ]["title"].tolist()
+
+    if filtered_movies:
+        selected_movie = st.selectbox(
+            "Select Matching Movie",
+            filtered_movies
+        )
+    else:
+        st.warning("No matching movie found.")
 
 if st.button("Recommend Movies"):
 
-    with st.spinner("Finding recommendations..."):
+    if selected_movie is None:
+        st.error("Please search and select a movie first.")
+    else:
+        with st.spinner("Finding recommendations..."):
 
-        names, posters = recommend(selected_movie)
+            names, posters = recommend(selected_movie)
 
-    cols = st.columns(5)
+        cols = st.columns(5)
 
-    for i in range(5):
-        with cols[i]:
-            st.image(posters[i], use_container_width=True)
-            st.caption(names[i])
+        for i in range(5):
+            with cols[i]:
+                st.image(posters[i], use_container_width=True)
+                st.caption(names[i])
 
 # ==========================================================
 # FOOTER
