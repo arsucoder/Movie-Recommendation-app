@@ -10,7 +10,7 @@ import gdown
 # ==========================================================
 
 st.set_page_config(
-    page_title="Movie Recommendation System",
+    page_title="Movie Recommendation App",
     page_icon="🎬",
     layout="wide"
 )
@@ -182,6 +182,6 @@ if st.button("Recommend Movies"):
 
 st.markdown("---")
 st.markdown(
-    "<center>Made with ❤️ using Streamlit</center>",
+    "<center>Made with ❤️ By arsu</center>",
     unsafe_allow_html=True
 )
