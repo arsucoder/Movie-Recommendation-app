@@ -30,7 +30,7 @@ st.write("Select a movie and get similar movie recommendations with posters.")
 # ==========================================================
 
 # Replace this with your Google Drive File ID
-FILE_ID = "YOUR_GOOGLE_DRIVE_FILE_ID"
+FILE_ID = st.secrets["GOOGLE_DRIVE_FILE_ID"]
 
 MODEL_PATH = "movie_recommendation.sav"
 
@@ -69,8 +69,7 @@ movies = load_movies()
 # ==========================================================
 
 # Replace with your TMDB API Key
-API_KEY = "YOUR_TMDB_API_KEY"
-
+API_KEY = st.secrets["TMDB_API_KEY"]
 
 def fetch_poster(movie_id):
     """
