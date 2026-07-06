@@ -134,10 +134,26 @@ def recommend(movie_name):
 # UI
 # ==========================================================
 
-selected_movie = st.selectbox(
-    "Select Movie",
-    movies["title"].values
+#selected_movie = st.selectbox(
+ #   "Select Movie",
+  #  movies["title"].values
+#)
+
+movie_input = st.text_input(
+    "🔍 Search Movie",
+    placeholder="Start typing a movie name..."
 )
+
+suggestions = search_movies(movie_input, movies)
+
+selected_movie = None
+
+if suggestions:
+
+    selected_movie = st.selectbox(
+        "Suggestions",
+        suggestions
+    )
 
 if st.button("Recommend Movies"):
 
